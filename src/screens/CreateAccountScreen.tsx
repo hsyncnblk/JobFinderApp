@@ -4,15 +4,29 @@ import React, { useContext } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
-
+import { useMutation } from 'react-query';
+import { registerUser } from '../api/index';
 
 const CreateAccountScreen = () => {
   const { control, handleSubmit ,reset } = useForm();
   const navigation = useNavigation();
 
+
+  const mutation = useMutation(({ email, password }: { email: string; password: string }) =>
+    registerUser(email, password)
+  );
   
   const onSubmit = (data: { email: string; password: string }) => {
-    console.log("user created")
+    mutation.mutate(data, {
+      onSuccess: (response) => {
+        console.log('Kayıt başarılı:', response);
+         navigation.navigate('JobListings');
+      },
+      onError: (error) => {
+        console.error('Kayıt hatası:', error);
+      },
+    });
+    reset(); 
   };
 
 
@@ -56,6 +70,9 @@ const CreateAccountScreen = () => {
         <Text style={styles.buttonText}>Sign Up</Text>
       </TouchableOpacity>
      
+      {mutation.isLoading && <Text>Loading...</Text>}
+      {mutation.isError && <Text style={styles.error}>sign up failed, try again.</Text>}
+
    
     </View>
   );

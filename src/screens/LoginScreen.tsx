@@ -3,17 +3,33 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-nativ
 import { useForm, Controller } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
+import { useMutation } from 'react-query'; 
+import { loginUser } from '../api/index'; 
+
+
 
 const LoginScreen = () => {
   const { control, handleSubmit, reset } = useForm();
-
   const navigation = useNavigation();
   const { t } = useTranslation();
 
-
+  const mutation = useMutation(({ email, password }: { email: string; password: string }) =>
+    loginUser(email, password)
+  );
 
   const onSubmit = (data: { email: string; password: string }) => {
-    console.log("deneme")
+    mutation.mutate(data, {
+      onSuccess: (response) => {
+        console.log('Login başarılı:', response);
+        
+        
+        navigation.navigate('JobListings'); 
+      },
+      onError: (error) => {
+        console.error('Login hatası:', error);
+      },
+    });
+    reset(); 
   };
 
   return (
@@ -56,6 +72,10 @@ const LoginScreen = () => {
       <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
         <Text style={styles.buttonText}>{t('login')}</Text>
       </TouchableOpacity>
+
+      {mutation.isLoading && <Text>{t('loading')}</Text>}
+      {mutation.isError && <Text style={styles.error}>{t('loginFailed')}</Text>}
+
 
 
       <Text style={styles.footerText}>{t('dontHaveAccount')}</Text>
