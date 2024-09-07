@@ -2,11 +2,13 @@ import React, { useContext } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
-
+import { useTranslation } from 'react-i18next';
 
 const LoginScreen = () => {
   const { control, handleSubmit, reset } = useForm();
 
+  const navigation = useNavigation();
+  const { t } = useTranslation();
 
 
 
@@ -16,54 +18,53 @@ const LoginScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome,</Text>
-      <Text style={styles.subtitle}>ACME APP</Text>
+      <Text style={styles.title}>{t('welcome')}</Text>
+      <Text style={styles.subtitle}>{t('appName')}</Text>
 
-      <Text style={styles.label}>Email</Text>
+      <Text style={styles.label}>{t('email')}</Text>
       <Controller
         control={control}
         name="email"
-        rules={{ required: 'Email is required' }}
+        rules={{ required: 'email is required' }}
         render={({ field: { onChange, value } }) => (
           <TextInput
             style={styles.input}
             onChangeText={onChange}
             value={value}
-            placeholder="Email"
+            placeholder={t('email')}
             keyboardType="email-address"
           />
         )}
       />
 
-      <Text style={styles.label}>Password</Text>
+      <Text style={styles.label}>{t('password')}</Text>
       <Controller
         control={control}
         name="password"
-        rules={{ required: 'Password is required' }}
+        rules={{ required: 'password is required' }}
         render={({ field: { onChange, value } }) => (
           <TextInput
             style={styles.input}
             onChangeText={onChange}
             value={value}
-            placeholder="Password"
+            placeholder={t('password')}
             secureTextEntry
           />
         )}
       />
 
       <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
-        <Text style={styles.buttonText}>Login</Text>
+        <Text style={styles.buttonText}>{t('login')}</Text>
       </TouchableOpacity>
 
-    
-      <Text style={styles.footerText}>Don't have an account?</Text>
-      <TouchableOpacity style={styles.button} onPress={() => console.log("create user ")}>
-        <Text style={styles.buttonText}>Create Account</Text>
+
+      <Text style={styles.footerText}>{t('dontHaveAccount')}</Text>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('CreateAccount')}>
+        <Text style={styles.buttonText}>{t('createAccount')}</Text>
       </TouchableOpacity>
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,

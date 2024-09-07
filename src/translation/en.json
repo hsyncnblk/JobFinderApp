@@ -1,0 +1,11 @@
+{
+    "welcome": "dsdssda,",
+    "appName": "ACME APP",
+    "email": "Email",
+    "password": "Password",
+    "login": "Login",
+    "loginFailed": "Login failed, try again.",
+    "dontHaveAccount": "Don't have an account?",
+    "createAccount": "Create Account"
+  }
+  

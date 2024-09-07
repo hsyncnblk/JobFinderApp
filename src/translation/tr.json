@@ -1,0 +1,11 @@
+{
+    "welcome": "Hoş geldiniz,",
+    "appName": "ACME UYGULAMASI",
+    "email": "E-posta",
+    "password": "Şifre",
+    "login": "Giriş Yap",
+    "loginFailed": "Giriş başarısız, tekrar deneyin.",
+    "dontHaveAccount": "Hesabınız yok mu?",
+    "createAccount": "Hesap Oluştur"
+  }
+  
