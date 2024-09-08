@@ -1,3 +1,4 @@
+import 'intl-pluralrules'; 
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import en from './en.json';
@@ -12,10 +13,10 @@ i18n.use(initReactI18next).init({
       translation: tr,
     },
   },
-  lng: 'en', // Varsayılan dili burada ayarlayabilirsiniz (ör. 'en' veya 'tr')
+  lng: 'en', // varsayılan dil
   fallbackLng: 'en', // Dil bulunamazsa varsayılan dil
   interpolation: {
-    escapeValue: false, // React varsayılan olarak zaten XSS koruması sağlar
+    escapeValue: false, 
   },
 });
 

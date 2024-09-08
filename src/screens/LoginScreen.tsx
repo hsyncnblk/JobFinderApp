@@ -5,13 +5,16 @@ import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query'; 
 import { loginUser } from '../api/index'; 
-
+import { AuthContext } from '../context/AuthContext';
 
 
 const LoginScreen = () => {
   const { control, handleSubmit, reset } = useForm();
   const navigation = useNavigation();
   const { t } = useTranslation();
+
+
+  const { login } = useContext(AuthContext); 
 
   const mutation = useMutation(({ email, password }: { email: string; password: string }) =>
     loginUser(email, password)
@@ -21,7 +24,7 @@ const LoginScreen = () => {
     mutation.mutate(data, {
       onSuccess: (response) => {
         console.log('Login başarılı:', response);
-        
+        login(response.accessToken);
         
         navigation.navigate('JobListings'); 
       },

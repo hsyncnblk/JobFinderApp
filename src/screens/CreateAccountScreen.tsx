@@ -6,11 +6,12 @@ import { useForm, Controller } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
 import { useMutation } from 'react-query';
 import { registerUser } from '../api/index';
+import { AuthContext } from '../context/AuthContext';
 
 const CreateAccountScreen = () => {
   const { control, handleSubmit ,reset } = useForm();
   const navigation = useNavigation();
-
+  const { login } = useContext(AuthContext);
 
   const mutation = useMutation(({ email, password }: { email: string; password: string }) =>
     registerUser(email, password)
@@ -20,6 +21,7 @@ const CreateAccountScreen = () => {
     mutation.mutate(data, {
       onSuccess: (response) => {
         console.log('Kayıt başarılı:', response);
+        login(response.accessToken);
          navigation.navigate('JobListings');
       },
       onError: (error) => {
