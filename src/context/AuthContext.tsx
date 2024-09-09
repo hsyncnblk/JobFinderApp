@@ -15,8 +15,11 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   const login = async (token: string) => {
+    console.log("tyoken",token)
+
     try {
       await AsyncStorage.setItem('userToken', token);
+      console.log("getItem",await AsyncStorage.getItem('userToken') )
       setIsLoggedIn(true);
     } catch (error) {
       console.log('Login error:', error);

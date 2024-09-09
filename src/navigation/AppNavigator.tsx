@@ -6,6 +6,7 @@ import LoginScreen from '../screens/LoginScreen';
 import CreateAccountScreen from '../screens/CreateAccountScreen';
 import BottomTabNavigator from './BottomTabNavigator'; 
 import { AuthContext } from '../context/AuthContext';
+import JobDetailScreen from '../screens/JobDetailScreen';
 
 
 const Stack = createStackNavigator();
@@ -19,6 +20,12 @@ const AppNavigator = () => {
         <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
         <Stack.Screen name="CreateAccount" component={CreateAccountScreen} options={{ headerTitle: "" }} />
+        <Stack.Screen name="JobDetail" component={JobDetailScreen} options={{
+         
+          headerTitle: 'Job Detail',
+          headerTitleAlign: 'center',
+          
+        }}  />
         <Stack.Screen 
           name="JobListings" 
           component={BottomTabNavigator} 
