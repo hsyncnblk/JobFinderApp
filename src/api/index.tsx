@@ -54,3 +54,52 @@ export const loginUser = async (email: string, password: string) => {
     console.log("gercek response data",response.data)
     return response.data; 
   };
+
+  // user
+  export const user = async () => {
+    const token = await AsyncStorage.getItem('userToken');
+
+    const response = await api.get('/user', {
+      headers: {
+        'Authorization': `Bearer ${token}`, 
+      },
+    });
+    return response; 
+  };
+
+
+  // update user
+
+  export const updateUser = async (userData) => {
+    const token = await AsyncStorage.getItem('userToken');
+
+    const response = await api.put('/user', userData ,{
+      headers: {
+        'Authorization': `Bearer ${token}`, 
+      },
+    });
+    return response; 
+  };
+
+// search with companyName
+export const searchJobs = async (searchQuery: string) => {
+  try {
+    const token = await AsyncStorage.getItem('userToken');
+    if (!token) throw new Error('Token bulunamadı');
+    
+    const response = await axios.get('/jobs', {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+      params: {
+        'search[field]': 'companyName',  
+        'search[query]': searchQuery,    
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Search jobs error:', error);
+    throw error;
+  }
+};

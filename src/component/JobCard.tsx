@@ -1,16 +1,39 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, TouchableOpacity } from 'react-native';
 import { StyleSheet, Text, View } from 'react-native'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { jobs, profile } from '../api';
+import { useQuery } from 'react-query';
+
+
+const fetchProfile = async () => {
+  const response = await profile();
+  return response;  
+};
 
 
 const JobCard = ({ job }) => {
 
+  const [isApplied, setIsApplied] = useState(true);
+
+
+  const { data: profileData, isLoading: isProfileLoading, error: profileError } = useQuery('profile', fetchProfile);
+  const appliedJobIds = profileData?.appliedJobs || [];
+
+
   console.log("job",job)
+  console.log("appliedJobIds",appliedJobIds)
 
+  useEffect(() => {
 
-    const [isApplied, setApplied] = useState(true);
+    if (appliedJobIds.includes(job.id)) {
+      setIsApplied(true);
+    } else {
+      setIsApplied(false);
+    }
+  }, [job.id, appliedJobIds]);
+
 
     const navigation = useNavigation();
 
@@ -30,10 +53,10 @@ const JobCard = ({ job }) => {
         <Text style={styles.salary}>Salary: {job.salary}$</Text>
       </View>
 
-        
-         <View style={styles.checkIcon}>
+        {isApplied && <View style={styles.checkIcon}>
          <MaterialIcons name="check-circle-outline" size={24} color="black" />
-         </View>
+         </View>}
+         
         
       
     </TouchableOpacity>
