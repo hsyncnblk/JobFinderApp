@@ -1,11 +1,16 @@
 {
     "welcome": "Hoş geldiniz,",
-    "appName": "ACME UYGULAMASI",
+    "appName": "ACME APP",
     "email": "E-posta",
     "password": "Şifre",
     "login": "Giriş Yap",
     "loginFailed": "Giriş başarısız, tekrar deneyin.",
     "dontHaveAccount": "Hesabınız yok mu?",
-    "createAccount": "Hesap Oluştur"
+    "createAccount": "Hesap Oluştur",
+    "job_listings": "İş İlanları",
+    "job_detail": "İş Detayı",
+    "applied_jobs": "Başvurulan İşler",
+    "profile": "Profil"
+
   }
   

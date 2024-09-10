@@ -1,5 +1,7 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Alert } from 'react-native';
+
 
 const api = axios.create({
   baseURL: 'https://novel-project-ntj8t.ampt.app/api',
@@ -7,8 +9,6 @@ const api = axios.create({
 
 export const refreshToken = async () => {
 
-  console.log("tr", await AsyncStorage.getItem('refreshToken')
-  )
   try {
     const storedRefreshToken = await AsyncStorage.getItem('refreshToken');
     if (!storedRefreshToken) throw new Error('Refresh token bulunamadı');
@@ -26,6 +26,8 @@ export const refreshToken = async () => {
     return newAccessToken;  
   } catch (error) {
     console.error('Error refreshing token:', error);
+    Alert.alert('Oturum Yenileme Hatası', 'Token yenileme sırasında bir hata oluştu. Lütfen tekrar giriş yapın.');
+
     throw error;
   }
 };
@@ -44,38 +46,52 @@ api.interceptors.response.use(
         originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`; 
         return api(originalRequest); 
       } catch (refreshError) {
-        console.error('Token yenileme sırasında hata:', refreshError);
+        Alert.alert('Giriş Hatası', 'Giriş yapmanız gerekiyor. Lütfen tekrar giriş yapın.');
         return Promise.reject(refreshError);  
       }
     }
-    
+    const errorMessage = error.response?.data?.message || 'Beklenmeyen bir hata oluştu. Lütfen tekrar deneyin.';
+    Alert.alert('Hata', errorMessage);
     return Promise.reject(error); 
   }
 );
 
 // Login 
 export const loginUser = async (email: string, password: string) => {
-  const response = await api.post('/login', {
-    email,
-    password,
-  });
+  try {
+    const response = await api.post('/login', {
+      email,
+      password,
+    });
 
-  const accessToken = response.data.accessToken;
+    const accessToken = response.data.accessToken;
   const refreshToken = response.data.refreshToken;
 
   await AsyncStorage.setItem('userToken', accessToken);
   await AsyncStorage.setItem('refreshToken', refreshToken);
   
   return response.data;
+  } catch (error) {
+    Alert.alert('Giriş Hatası', 'Kullanıcı adı veya şifre hatalı.');
+    throw error;
+  }
+ 
+
+  
 };
 
 // Sign Up  
 export const registerUser = async (email: string, password: string) => {
-  const response = await api.post('/register', {
-    email,
-    password,
-  });
-  return response.data;
+  try {
+    const response = await api.post('/register', {
+      email,
+      password,
+    });
+    return response.data;
+  } catch (error) {
+    Alert.alert('Kayıt Hatası', 'Kayıt sırasında bir hata oluştu. Lütfen tekrar deneyin.');
+    throw error;
+  }
 };
 
 // Profile
@@ -102,24 +118,36 @@ export const jobs = async () => {
 
 // User bilgilerini al
 export const user = async () => {
-  const token = await AsyncStorage.getItem('userToken');
-  const response = await api.get('/user', {
-    headers: {
-      'Authorization': `Bearer ${token}`, 
-    },
-  });
-  return response.data;
+  try {
+    const token = await AsyncStorage.getItem('userToken');
+    const response = await api.get('/user', {
+      headers: {
+        'Authorization': `Bearer ${token}`, 
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Search jobs error:', error);
+    throw error;
+  }
+ 
 };
 
 // Kullanıcı bilgilerini güncelle
 export const updateUser = async (userData) => {
-  const token = await AsyncStorage.getItem('userToken');
+  try {
+    const token = await AsyncStorage.getItem('userToken');
   const response = await api.put('/user', userData, {
     headers: {
       'Authorization': `Bearer ${token}`, 
     },
   });
   return response.data;
+  
+  } catch (error) {
+    console.log("basarıszı güncelleme ", error)
+  }
+  
 };
 
 // Şirket ismi ile iş arama
@@ -148,21 +176,31 @@ export const searchJobs = async (searchQuery: string) => {
 
 
 export const applyJob = async (id) => {
-  const token = await AsyncStorage.getItem('userToken');
-  const response = await api.post(`/jobs/${id}/apply`, null, {
-    headers: {
-      'Authorization': `Bearer ${token}`, 
-    },
-  });
-  return response.data;
+  try {
+    const token = await AsyncStorage.getItem('userToken');
+    const response = await api.post(`/jobs/${id}/apply`, null, {
+      headers: {
+        'Authorization': `Bearer ${token}`, 
+      },
+    });
+    return response.data;
+  } catch (error) {
+    Alert.alert('Başvuru Hatası', 'İşe başvuru sırasında bir hata oluştu.');
+    throw error;
+  }
 };
 
 export const withdrawJob = async (id) => {
-  const token = await AsyncStorage.getItem('userToken');
-  const response = await api.post(`/jobs/${id}/withdraw`, null, {
-    headers: {
-      'Authorization': `Bearer ${token}`, 
-    },
-  });
-  return response.data;
+  try {
+    const token = await AsyncStorage.getItem('userToken');
+    const response = await api.post(`/jobs/${id}/withdraw`, null, {
+      headers: {
+        'Authorization': `Bearer ${token}`, 
+      },
+    });
+    return response.data;
+  } catch (error) {
+    Alert.alert('Başvuru Çekme Hatası', 'Başvuru çekme sırasında bir hata oluştu.');
+    throw error;
+  }
 };

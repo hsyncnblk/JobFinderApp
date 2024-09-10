@@ -66,7 +66,7 @@ const LoginScreen = () => {
             style={styles.input}
             onChangeText={onChange}
             value={value}
-            placeholder={t('password')}
+            placeholder="******"
             secureTextEntry
           />
         )}

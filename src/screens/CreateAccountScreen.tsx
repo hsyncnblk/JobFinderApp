@@ -7,11 +7,16 @@ import { useNavigation } from '@react-navigation/native';
 import { useMutation } from 'react-query';
 import { registerUser } from '../api/index';
 import { AuthContext } from '../context/AuthContext';
+import { useTranslation } from 'react-i18next';
+
 
 const CreateAccountScreen = () => {
   const { control, handleSubmit ,reset } = useForm();
   const navigation = useNavigation();
   const { login } = useContext(AuthContext);
+
+  const { t } = useTranslation();
+
 
   const mutation = useMutation(({ email, password }: { email: string; password: string }) =>
     registerUser(email, password)
@@ -34,9 +39,9 @@ const CreateAccountScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Create Account</Text>
+      <Text style={styles.title}>{t('createAccount')}</Text>
 
-      <Text style={styles.label}>Email</Text>
+      <Text style={styles.label}>{t('email')}</Text>
       <Controller
         control={control}
         name="email"
@@ -52,7 +57,7 @@ const CreateAccountScreen = () => {
         )}
       />
 
-      <Text style={styles.label}>Password</Text>
+      <Text style={styles.label}>{t('password')}</Text>
       <Controller
         control={control}
         name="password"
@@ -62,7 +67,7 @@ const CreateAccountScreen = () => {
             style={styles.input}
             onChangeText={onChange}
             value={value}
-            placeholder="Password"
+            placeholder="******"
             secureTextEntry
           />
         )}

@@ -23,7 +23,7 @@ const AppliedJobsScreen = () => {
 
  
  
-
+  
   // Yüklenme durumu
   if (isJobsLoading || isProfileLoading) {
     return <View><Text>Loading...</Text></View>;
@@ -42,7 +42,8 @@ const AppliedJobsScreen = () => {
       refetchProfile();
     }, [])
   );
-
+  console.log("job",jobData)
+  console.log("prof",profileData)
   const appliedJobs = jobData?.filter((job) => appliedJobIds.includes(job.id)) || [];
 
   if (appliedJobs.length === 0) {

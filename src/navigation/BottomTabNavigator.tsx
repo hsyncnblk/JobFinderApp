@@ -138,6 +138,8 @@ const BottomTabNavigator = () => {
         name="JobList"
         component={JobListStackNavigator}
         options={{
+          title:'Job List',
+
           headerShown: false
          
         }}
@@ -146,6 +148,7 @@ const BottomTabNavigator = () => {
         name="ApplicationJob"
         component={AppliedStackNavigator}
         options={{
+          title:'Application Job',
           headerShown: false
         }}
       />

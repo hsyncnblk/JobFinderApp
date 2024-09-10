@@ -1,11 +1,15 @@
 {
-    "welcome": "dsdssda,",
+    "welcome": "Welcome,",
     "appName": "ACME APP",
     "email": "Email",
     "password": "Password",
     "login": "Login",
     "loginFailed": "Login failed, try again.",
     "dontHaveAccount": "Don't have an account?",
-    "createAccount": "Create Account"
+    "createAccount": "Create Account",
+    "job_listings": "Job List",
+    "job_detail": "Job Detail",
+    "applied_jobs": "Applied Jobs",
+    "profile": "Profile"
   }
   

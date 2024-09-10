@@ -55,7 +55,7 @@ const JobListingsScreen = () => {
     return (
       <View style={styles.container}>
         <SearchBar/>
-        <Text>No jobs available</Text>
+        <Text>no job</Text>
       </View>
     );
   }

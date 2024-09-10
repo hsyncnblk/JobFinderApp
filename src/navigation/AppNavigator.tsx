@@ -5,18 +5,16 @@ import SplashScreen from '../screens/SplashScreen';
 import LoginScreen from '../screens/LoginScreen';
 import CreateAccountScreen from '../screens/CreateAccountScreen';
 import BottomTabNavigator from './BottomTabNavigator'; 
-import { AuthContext } from '../context/AuthContext';
 import JobDetailScreen from '../screens/JobDetailScreen';
 
 
 const Stack = createStackNavigator();
 
 const AppNavigator = () => {
-  const { isLoggedIn } = useContext(AuthContext);
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={isLoggedIn ? 'JobListings' : 'Login'}>
+      <Stack.Navigator initialRouteName={'Splash'}>
         <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
         <Stack.Screen name="CreateAccount" component={CreateAccountScreen} options={{ headerTitle: "" }} />

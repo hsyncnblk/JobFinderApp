@@ -6,17 +6,22 @@ import { useForm } from 'react-hook-form';
 
 const getUser = async () => {
   const response = await user();
-  return response.data;
+  return response;
 };
 
 const ProfileScreen = () => {
-  const { data: userData, isLoading: isUserLoading, error: UserError } = useQuery('user', getUser);
-
-  const { register, handleSubmit, setValue, reset, formState: { errors } } = useForm();
+  const { data: userData, isLoading: isUserLoading, error: UserError, refetch } = useQuery('user', getUser);
+  
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    reset,
+    formState: { errors },
+  } = useForm();
 
   useEffect(() => {
     if (userData) {
-
       reset({
         name: userData.name,
         surname: userData.surname,
@@ -32,7 +37,11 @@ const ProfileScreen = () => {
 
   const onSubmit = async (data) => {
     const formattedData = {
-      ...data,
+      name: data.name,
+      surname: data.surname,
+      phone: data.phone,
+      profileImage: data.profileImage,
+      dateOfBirth: data.dateOfBirth,
       address: {
         details: data.addressDetails,
         city: data.city,
@@ -42,9 +51,12 @@ const ProfileScreen = () => {
 
     try {
       const response = await updateUser(formattedData);
-      console.log("kayıt oldu", response.data); 
+      console.log('Kayıt başarılı', response);
+
+      // Güncelleme sonrası veriyi tekrar çek
+      refetch();
     } catch (error) {
-      console.error("Güncelleme hatası:", error.response?.data || error.message); 
+      console.error('Güncelleme hatası:', error.response?.data || error.message);
     }
   };
 
@@ -66,80 +78,89 @@ const ProfileScreen = () => {
           <TextInput
             style={styles.input}
             placeholder="Name"
-            defaultValue={userData?.name} 
-            {...register('name')}
+            defaultValue={userData?.name}
+            onChangeText={(text) => setValue('name', text)} // Form değerini manuel olarak güncelle
+            {...register('name', { required: 'Name is required' })}
           />
+          {errors.name && <Text style={styles.errorText}>{errors.name.message?.toString()}</Text>}
 
           <Text style={styles.subTitle}>Surname</Text>
           <TextInput
             style={styles.input}
             placeholder="Surname"
             defaultValue={userData?.surname}
-            {...register('surname')}
+            onChangeText={(text) => setValue('surname', text)} // Form değerini manuel olarak güncelle
+            {...register('surname', { required: 'Surname is required' })}
           />
+          {errors.surname && <Text style={styles.errorText}>{errors.surname.message?.toString()}</Text>}
 
           <Text style={styles.subTitle}>Profile Image</Text>
           <TextInput
             style={styles.input}
             placeholder="Profile Image URL"
             defaultValue={userData?.profileImage}
-            {...register('profileImage')}
+            onChangeText={(text) => setValue('profileImage', text)} // Form değerini manuel olarak güncelle
+            {...register('profileImage', { required: 'Profile Image is required' })}
           />
+          {errors.profileImage && <Text style={styles.errorText}>{errors.profileImage.message?.toString()}</Text>}
 
           <Text style={styles.subTitle}>Phone</Text>
           <TextInput
             style={styles.input}
             placeholder="Phone Number"
             defaultValue={userData?.phone}
-            {...register('phone', { required: true })}
+            onChangeText={(text) => setValue('phone', text)} // Form değerini manuel olarak güncelle
+            {...register('phone', { required: 'Phone number is required' })}
           />
-          {errors.phone && <Text style={styles.errorText}>Phone is required</Text>}
+          {errors.phone && <Text style={styles.errorText}>{errors.phone.message?.toString()}</Text>}
 
           <Text style={styles.subTitle}>Date Of Birth</Text>
-<TextInput
-  style={styles.input}
-  placeholder="YYYY-MM-DD"
-  defaultValue={userData?.dateOfBirth}
-  {...register('dateOfBirth', { required: true })}  // YYYY-MM-DD doğrulama
-/>
-{errors.dateOfBirth && <Text style={styles.errorText}>Please enter a valid date (YYYY-MM-DD)</Text>}
-
-
+          <TextInput
+            style={styles.input}
+            placeholder="YYYY-MM-DD"
+            defaultValue={userData?.dateOfBirth}
+            onChangeText={(text) => setValue('dateOfBirth', text)} // Form değerini manuel olarak güncelle
+            {...register('dateOfBirth', { required: 'Date of Birth is required' })}
+          />
+          {errors.dateOfBirth && <Text style={styles.errorText}>{errors.dateOfBirth.message?.toString()}</Text>}
 
           <Text style={styles.title}>Address</Text>
 
-          
-
           <Text style={styles.subTitle}>Country</Text>
-<TextInput
-  style={styles.input}
-  placeholder="Country"
-  defaultValue={userData?.address?.country}
-  {...register('country', { required: true })}  // Zorunlu alan olarak işaretliyoruz
-/>
-{errors.country && <Text style={styles.errorText}>Country is required</Text>}
+          <TextInput
+            style={styles.input}
+            placeholder="Country"
+            defaultValue={userData?.address?.country}
+            onChangeText={(text) => setValue('country', text)} // Form değerini manuel olarak güncelle
+            {...register('country', { required: 'Country is required' })}
+          />
+          {errors.country && <Text style={styles.errorText}>{errors.country.message?.toString()}</Text>}
+
           <Text style={styles.subTitle}>City</Text>
           <TextInput
             style={styles.input}
             placeholder="City"
             defaultValue={userData?.address?.city}
-            {...register('city')}
+            onChangeText={(text) => setValue('city', text)} // Form değerini manuel olarak güncelle
+            {...register('city', { required: 'City is required' })}
           />
+          {errors.city && <Text style={styles.errorText}>{errors.city.message?.toString()}</Text>}
 
-<Text style={styles.subTitle}>Address Details</Text>
+          <Text style={styles.subTitle}>Address Details</Text>
           <TextInput
             style={styles.input}
-            placeholder="details"
+            placeholder="Details"
             defaultValue={userData?.address?.details}
-            {...register('details')}
+            onChangeText={(text) => setValue('addressDetails', text)} // Form değerini manuel olarak güncelle
+            {...register('addressDetails', { required: 'Address details are required' })}
           />
+          {errors.addressDetails && <Text style={styles.errorText}>{errors.addressDetails.message?.toString()}</Text>}
 
           <View style={{ alignItems: 'center', marginBottom: 100 }}>
             <TouchableOpacity style={styles.btn} onPress={handleSubmit(onSubmit)}>
               <Text style={styles.btnText}>Update</Text>
             </TouchableOpacity>
           </View>
-
         </ScrollView>
       </View>
     </View>
