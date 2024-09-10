@@ -14,11 +14,15 @@ export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const login = async (token: string) => {
+  const login = async (token: string , refresh:string) => {
     console.log("tyoken",token)
+
+    console.log("Login accessToken:", token);
+    console.log("Login refreshToken:", refresh);
 
     try {
       await AsyncStorage.setItem('userToken', token);
+      await AsyncStorage.setItem('refreshToken',refresh)
       console.log("getItem",await AsyncStorage.getItem('userToken') )
       setIsLoggedIn(true);
     } catch (error) {
@@ -29,6 +33,7 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       await AsyncStorage.removeItem('userToken');
+      await AsyncStorage.removeItem('refreshToken')
       setIsLoggedIn(false); 
     } catch (error) {
       console.error('Logout error:', error);

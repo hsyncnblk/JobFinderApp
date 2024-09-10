@@ -1,10 +1,11 @@
-import { useNavigation } from '@react-navigation/native';
-import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import React, { useCallback } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { jobs, profile } from '../api';
 import { useQuery } from 'react-query';
-
+import JobCard from '../component/JobCard';
+ 
 const fetchJobs = async () => {
   const response = await jobs();
   return response.data;  
@@ -17,11 +18,11 @@ const fetchProfile = async () => {
 
 
 const AppliedJobsScreen = () => {
-  const { data: jobData, isLoading: isJobsLoading, error: jobsError } = useQuery('jobs', fetchJobs);
-  const { data: profileData, isLoading: isProfileLoading, error: profileError } = useQuery('profile', fetchProfile);
+  const { data: jobData, isLoading: isJobsLoading, error: jobsError, refetch: refetchJobs } = useQuery('jobs', fetchJobs);
+  const { data: profileData, isLoading: isProfileLoading, error: profileError, refetch: refetchProfile } = useQuery('profile', fetchProfile);
 
  
-
+ 
 
   // Yüklenme durumu
   if (isJobsLoading || isProfileLoading) {
@@ -31,8 +32,16 @@ const AppliedJobsScreen = () => {
   if (jobsError || profileError) {
     return <View><Text>Error loading data</Text></View>;
   }
-
+ 
   const appliedJobIds = profileData?.appliedJobs || [];
+
+  useFocusEffect(
+    useCallback(() => {
+     
+      refetchJobs();
+      refetchProfile();
+    }, [])
+  );
 
   const appliedJobs = jobData?.filter((job) => appliedJobIds.includes(job.id)) || [];
 
@@ -42,37 +51,39 @@ const AppliedJobsScreen = () => {
         <Text>No applied jobs found</Text>
       </View>
     );
-  }
+  } 
 
   const navigation = useNavigation();
 
   return (
-    
+    <ScrollView style={{ backgroundColor: 'white', flex: 1 }}>
     <View style={{ backgroundColor: 'white', flex: 1 }}>
       {appliedJobs.map((job) => (
-        <TouchableOpacity 
-          onPress={() => navigation.navigate('JobDetail', { job })} 
-          key={job.id} 
-          style={styles.container}>
+        <JobCard job={job}/>
+        // <TouchableOpacity 
+        //   onPress={() => navigation.navigate('JobDetail', { job })} 
+        //   key={job.id} 
+        //   style={styles.container}>
           
-          <View style={styles.iconContainer}>
-            <MaterialIcons name="work-outline" size={30} color="black" />
-          </View>
+        //   <View style={styles.iconContainer}>
+        //     <MaterialIcons name="work-outline" size={30} color="black" />
+        //   </View>
 
-          <View>
-            <Text style={styles.jobTitle} numberOfLines={1} ellipsizeMode="tail">
-              {job.name}
-            </Text>
-            <Text style={styles.companyName} numberOfLines={1}>
-              Company: {job.companyName}
-            </Text>
-            <Text style={styles.salary}>
-              Salary: {job.salary}$
-            </Text>
-          </View>
-        </TouchableOpacity>
+        //   <View>
+        //     <Text style={styles.jobTitle} numberOfLines={1} ellipsizeMode="tail">
+        //       {job.name}
+        //     </Text>
+        //     <Text style={styles.companyName} numberOfLines={1}>
+        //       Company: {job.companyName}
+        //     </Text>
+        //     <Text style={styles.salary}>
+        //       Salary: {job.salary}$
+        //     </Text>
+        //   </View>
+        // </TouchableOpacity>
       ))}
     </View>
+    </ScrollView>
   );
 };
 

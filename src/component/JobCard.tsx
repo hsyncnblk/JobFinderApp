@@ -32,13 +32,13 @@ const JobCard = ({ job }) => {
     } else {
       setIsApplied(false);
     }
-  }, [job.id, appliedJobIds]);
+  }, [job.id, appliedJobIds, profileData]);
 
 
     const navigation = useNavigation();
 
     const handlePress = () => {
-      navigation.navigate('JobDetail', { job });
+      navigation.navigate('JobDetail', { job , isApplied , setIsApplied });
     };
 
   return (

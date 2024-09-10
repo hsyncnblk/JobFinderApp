@@ -21,7 +21,7 @@ const CreateAccountScreen = () => {
     mutation.mutate(data, {
       onSuccess: (response) => {
         console.log('Kayıt başarılı:', response);
-        login(response.accessToken);
+        login(response.accessToken , response.refreshToken);
          navigation.navigate('JobListings');
       },
       onError: (error) => {

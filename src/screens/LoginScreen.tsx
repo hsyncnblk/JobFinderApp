@@ -24,7 +24,7 @@ const LoginScreen = () => {
     mutation.mutate(data, {
       onSuccess: (response) => {
         console.log('Login başarılı:', response);
-        login(response.accessToken);
+        login(response.accessToken , response.refreshToken);
         
         navigation.navigate('JobListings'); 
       },

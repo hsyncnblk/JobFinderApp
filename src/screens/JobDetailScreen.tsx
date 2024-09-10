@@ -2,15 +2,40 @@ import React, { useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 import { View } from 'react-native'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { applyJob, withdrawJob } from '../api';
 
 
 const JobDetailScreen = ({ route }) => {
 
-  const [isApplied, setIsApplied] = useState(false)
+  const { job, isApplied , setIsApplied } = route.params;
 
-  const { job } = route.params;
+  const [applied, setApplied]= useState(isApplied)
 
-  console.log("Detay job", job)
+  console.log("Detay job", job.id)
+
+  const handleApply = async (id) => {
+    console.log("Detay job", id);
+
+    try {
+        const response = await applyJob(id);  // applyJob'u await ile bekliyoruz
+        console.log('Başvuru başarılı:', response);  // Başvuru başarılı olduğunda yanıtı loglayın
+        setIsApplied(true)
+        setApplied(true)
+    } catch (error) {
+        console.error('Başvuru sırasında hata:', error);  // Hata varsa loglayın
+    }
+};
+
+  const handleWithdraw = async (id) => {
+    try {
+      const response = await withdrawJob(id);  // withdrawJob'u bekleyin
+      console.log('Başvuru iptali başarılı:', response);
+      setIsApplied(false)
+      setApplied(false)
+    } catch (error) {
+      console.error('Başvuru iptali sırasında hata:', error);  // Hataları yönetin
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -44,15 +69,15 @@ const JobDetailScreen = ({ route }) => {
           <Text style={{ color: 'black', fontWeight: 'bold', }}>{job.description}</Text>
         </View>
 
-        {isApplied ?
-
-          <TouchableOpacity style={styles.btnApply}>
-            <Text  style={styles.textApply}>Apply</Text>
-          </TouchableOpacity> : 
-
-          <TouchableOpacity style={styles.btnWithdraw}>
+        {applied ?
+          <TouchableOpacity onPress={() => handleWithdraw(job.id)}  style={styles.btnWithdraw}>
             <Text style={styles.textWithdraw}>Withdraw</Text>
           </TouchableOpacity>
+          :
+          <TouchableOpacity onPress={() => handleApply(job.id)}  style={styles.btnApply}>
+            <Text style={styles.textApply}>Apply</Text>
+          </TouchableOpacity>
+
         }
 
 
@@ -97,7 +122,7 @@ export const styles = StyleSheet.create({
     color: 'black',
     textAlign: 'center',
     fontWeight: 'bold',
-    alignItems: 'center', 
+    alignItems: 'center',
     justifyContent: 'center',
     padding: 5,
   },
@@ -114,29 +139,29 @@ export const styles = StyleSheet.create({
   btnApply: {
     margin: 30,
     borderWidth: 3,
-    paddingHorizontal:35,
+    paddingHorizontal: 35,
     height: 40,
-    borderRadius:5,
+    borderRadius: 5,
     borderBottomWidth: 5,
     borderRightWidth: 5,
-    backgroundColor:'black',
-     justifyContent: 'center',
-    alignItems:'center'
+    backgroundColor: 'black',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   textApply: {
     color: 'white',
     fontWeight: 'bold',
   },
-  btnWithdraw:{
+  btnWithdraw: {
     margin: 30,
     borderWidth: 3,
-    paddingHorizontal:30,
+    paddingHorizontal: 30,
     height: 40,
     borderBottomWidth: 5,
     borderRightWidth: 5,
-    backgroundColor:'white',
-     justifyContent: 'center',
-    alignItems:'center'
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   textWithdraw: {
     color: 'black',

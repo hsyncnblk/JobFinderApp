@@ -47,7 +47,7 @@ const JobListingsScreen = () => {
           job.companyName.toLowerCase().includes(searchQuery.toLowerCase()) 
         );
         setFilteredJobs(filtered);
-      }
+      } 
     } 
   }, [searchQuery, jobsList]); 
 
