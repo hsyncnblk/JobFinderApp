@@ -3,11 +3,13 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { applyJob, withdrawJob } from '../api';
 import { useProfile } from '../context/ProfileDataContext';
+import { useTranslation } from 'react-i18next';  
 
 const JobDetailScreen = ({ route }) => {
   const { job, isApplied, setIsApplied } = route.params;
   const { profileData, setProfileData } = useProfile(); 
   const [applied, setApplied] = useState(isApplied);
+  const { t } = useTranslation();  
 
   console.log("Detay job", job.id);
 
@@ -34,7 +36,6 @@ const JobDetailScreen = ({ route }) => {
       setIsApplied(false);
       setApplied(false);
 
-      // Profil verisini güncelle
       setProfileData((prevProfileData) => ({
         ...prevProfileData,
         appliedJobs: prevProfileData?.appliedJobs?.filter((jobId) => jobId !== id),  
@@ -51,16 +52,16 @@ const JobDetailScreen = ({ route }) => {
 
         <Text style={styles.title}>{job.name}</Text>
         <Text style={styles.subTitle}>
-          Company:<Text style={{ fontWeight: '400' }}> {job.companyName}</Text>
+          {t('company')}:<Text style={{ fontWeight: '400' }}> {job.companyName}</Text>
         </Text>
         <Text style={styles.subTitle}>
-          Location:<Text style={{ fontWeight: '400' }}> {job.location}</Text>
+          {t('Location')}:<Text style={{ fontWeight: '400' }}> {job.location}</Text>
         </Text>
         <Text style={styles.subTitle}>
-          Salary:<Text style={{ fontWeight: '400' }}> {job.salary}$</Text>
+          {t('salary')}:<Text style={{ fontWeight: '400' }}> {job.salary}$</Text>
         </Text>
 
-        <Text style={styles.title}>Keywords</Text>
+        <Text style={styles.title}>{t('Keywords')}</Text>
         <View style={{ paddingHorizontal: 10, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around' }}>
         {job.keywords.map((keyword, index) => (
              <Text key={`${keyword}-${index}`} style={styles.keywords}>
@@ -69,18 +70,18 @@ const JobDetailScreen = ({ route }) => {
           ))}
         </View>
 
-        <Text style={styles.title}>Job Description</Text>
+        <Text style={styles.title}>{t('JobDesc')}</Text>
         <View style={styles.descriptionBox}>
           <Text style={{ color: 'black', fontWeight: 'bold' }}>{job.description}</Text>
         </View>
 
         {applied ? (
           <TouchableOpacity onPress={() => handleWithdraw(job.id)} style={styles.btnWithdraw}>
-            <Text style={styles.textWithdraw}>Withdraw</Text>
+            <Text style={styles.textWithdraw}>{t('Withdraw')}</Text>
           </TouchableOpacity>
         ) : (
           <TouchableOpacity onPress={() => handleApply(job.id)} style={styles.btnApply}>
-            <Text style={styles.textApply}>Apply</Text>
+            <Text style={styles.textApply}>{t('Apply')}</Text>
           </TouchableOpacity>
         )}
       </View>

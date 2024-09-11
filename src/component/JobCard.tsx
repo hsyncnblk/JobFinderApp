@@ -1,14 +1,13 @@
-
-
-
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { Button, TouchableOpacity, StyleSheet, Text, View } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useProfile } from '../context/ProfileDataContext';  
+import { useTranslation } from 'react-i18next';
 
 const JobCard = ({ job }) => {
   const [isApplied, setIsApplied] = useState(false);
+  const { t } = useTranslation();  
 
   const { profileData, isLoading, error } = useProfile();
   const appliedJobIds = profileData?.appliedJobs || [];
@@ -27,8 +26,8 @@ const JobCard = ({ job }) => {
     navigation.navigate('JobDetail', { job, isApplied, setIsApplied });
   };
 
-  if (isLoading) return <Text>Loading...</Text>;
-  if (error) return <Text>Error loading profile</Text>;
+  if (isLoading) return <Text>Loading...</Text>;  
+  if (error) return <Text>Error loading profile</Text>; 
 
   return (
     <TouchableOpacity onPress={handlePress} style={styles.container}>
@@ -41,9 +40,9 @@ const JobCard = ({ job }) => {
           {job.name}
         </Text>
         <Text style={styles.companyName} numberOfLines={1}>
-          Company: {job.companyName}
+          {t('company')}: {job.companyName}  
         </Text>
-        <Text style={styles.salary}>Salary: {job.salary}$</Text>
+        <Text style={styles.salary}>{t('salary')}: {job.salary}$</Text> 
       </View>
 
       {isApplied && (

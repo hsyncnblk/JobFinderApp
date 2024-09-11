@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useNavigation } from '@react-navigation/native';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-
+import { useTranslation } from 'react-i18next';
 import { AuthContext } from '../context/AuthContext';
 import JobList from '../screens/JobListingsScreen';
 import ApplicationJob from '../screens/AppliedJobsScreen';
@@ -16,6 +16,7 @@ const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const JobListStackNavigator = () => {
+  const { t } = useTranslation(); 
 
   const { isLoggedIn, logout } = useContext(AuthContext);
   const navigation = useNavigation();
@@ -32,7 +33,7 @@ const JobListStackNavigator = () => {
         component={JobList}
         options={{
            headerTitleAlign: 'center',
-          headerTitle: 'Job Listings',
+          headerTitle: t('job_listings'),
           headerLeft: () => (
             <SimpleLineIcons
               name="logout"
@@ -42,13 +43,22 @@ const JobListStackNavigator = () => {
               onPress={() => handleLogout(navigation)}
             />
           ),
+          headerRight: () => (
+            <MaterialIcons
+              name="language"
+              size={25}
+              color="black"
+              style={{ marginRight: 10 }}
+              onPress={() => navigation.navigate('Language')}
+            />
+          )
         }}
       />
       <Stack.Screen
         name="JobDetail"
         component={JobDetailScreen}
         options={{
-          headerTitle: 'Job Detail',
+          headerTitle: t('job_detail'),
           headerTitleAlign: 'center',
         }}
       />
@@ -57,6 +67,7 @@ const JobListStackNavigator = () => {
 };
 
 const AppliedStackNavigator = () => {
+  const { t } = useTranslation();
 
   const { isLoggedIn, logout } = useContext(AuthContext);
   const navigation = useNavigation();
@@ -70,7 +81,7 @@ const AppliedStackNavigator = () => {
         component={ApplicationJob}
         options={{
           headerTitleAlign: 'center',
-          headerTitle: 'Applied Jobs',
+          headerTitle: t('applied_jobs'), 
           headerLeft: () => (
             <MaterialIcons
               name="arrow-back"
@@ -86,7 +97,7 @@ const AppliedStackNavigator = () => {
         name="JobDetail"
         component={JobDetailScreen}
         options={{
-          headerTitle: 'Job Detail',
+          headerTitle: t('job_detail'),
           headerTitleAlign: 'center',
         }}
       />
@@ -96,6 +107,8 @@ const AppliedStackNavigator = () => {
 
 
 const BottomTabNavigator = () => {
+  const { t } = useTranslation();
+
   const { isLoggedIn, logout } = useContext(AuthContext);
   const navigation = useNavigation();
 
@@ -138,8 +151,7 @@ const BottomTabNavigator = () => {
         name="JobList"
         component={JobListStackNavigator}
         options={{
-          title:'Job List',
-
+          title: t('job_listings'),
           headerShown: false
          
         }}
@@ -148,7 +160,7 @@ const BottomTabNavigator = () => {
         name="ApplicationJob"
         component={AppliedStackNavigator}
         options={{
-          title:'Application Job',
+          title: t('applied_jobs'),
           headerShown: false
         }}
       />
@@ -156,7 +168,7 @@ const BottomTabNavigator = () => {
         name="Profile"
         component={Profile}
         options={{
-          headerTitle: 'Profile Detail',
+          title: t('profile'), 
           headerLeft: () => (
             <MaterialIcons
               name="arrow-back"

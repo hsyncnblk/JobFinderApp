@@ -85,6 +85,7 @@ const LoginScreen = () => {
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('CreateAccount')}>
         <Text style={styles.buttonText}>{t('createAccount')}</Text>
       </TouchableOpacity>
+
     </View>
   );
 };

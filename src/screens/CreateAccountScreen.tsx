@@ -51,7 +51,7 @@ const CreateAccountScreen = () => {
             style={styles.input}
             onChangeText={onChange}
             value={value}
-            placeholder="Email"
+            placeholder={t('email')}
             keyboardType="email-address"
           />
         )}
@@ -74,7 +74,7 @@ const CreateAccountScreen = () => {
       />
 
       <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
-        <Text style={styles.buttonText}>Sign Up</Text>
+        <Text style={styles.buttonText}>{t('signUp')}</Text>
       </TouchableOpacity>
      
       {mutation.isLoading && <Text>Loading...</Text>}

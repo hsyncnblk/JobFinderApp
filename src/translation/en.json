@@ -7,9 +7,36 @@
     "loginFailed": "Login failed, try again.",
     "dontHaveAccount": "Don't have an account?",
     "createAccount": "Create Account",
+    "signUp": "Sign Up",
+    "search": "Search (companyName)",
     "job_listings": "Job List",
     "job_detail": "Job Detail",
     "applied_jobs": "Applied Jobs",
-    "profile": "Profile"
+    "profile": "Profile",
+    "profileDetail": "Profile Detail",
+    "company": "Company",
+    "salary": "Salary",
+    "Location" : "Location",
+    "Keywords" : "Keywords",
+    "JobDesc": "Job Description",
+    "Apply": "Apply",
+    "Withdraw" : "Withdraw",
+    "name" : "Name",
+    "surname" : "Surname",
+    "profileImage" :"Profile Image",
+    "Phone" : "Phone",
+    "dateOfBirth":"Date Of Birth",
+    "adress": "Adress",
+    "Country": "Country",
+    "city" :  "City",
+    "adressDetail": "Adress Details",
+    "update":"Update",
+    "PersonaleInfo": "Personal Information",
+    "selectLanguage": "Select Language",
+  "turkish": "Turkish",
+  "english": "English"
+  
+  
+  
   }
   

@@ -3,10 +3,13 @@ import { StyleSheet, View, TextInput } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { SearchContext } from '../context/SearchContext'; 
 import { searchJobs } from '../api';
+import { useTranslation } from 'react-i18next';
+
 
 const SearchBar = () => {
   const { setSearchQuery } = useContext(SearchContext); 
   const [searchText, setSearchText] = useState(''); 
+  const { t } = useTranslation(); 
 
   const fetchSearch = async (query: string) => {
     try {
@@ -40,7 +43,7 @@ const SearchBar = () => {
         />
         <TextInput
           style={styles.input}
-          placeholder="Search (companyName)"
+          placeholder= {t('search')}
           placeholderTextColor="black"
           value={searchText}  
           onChangeText={(text) => setSearchText(text)} 
