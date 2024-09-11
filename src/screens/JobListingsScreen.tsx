@@ -16,7 +16,7 @@ const JobListingsScreen = () => {
   const { data: jobData, isLoading, error } = useQuery('jobs', fetchJobs);
   const [filteredJobs, setFilteredJobs] = useState([]);  
 
-  
+
   // if (isLoading) {
   //   return (
   //     <View style={styles.container}>
@@ -55,7 +55,7 @@ const JobListingsScreen = () => {
     return (
       <View style={styles.container}>
         <SearchBar/>
-        <Text>no job</Text>
+        <Text>try again</Text>
       </View>
     );
   }

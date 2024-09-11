@@ -145,7 +145,7 @@ export const updateUser = async (userData) => {
   return response.data;
   
   } catch (error) {
-    console.log("basarıszı güncelleme ", error)
+    console.log("basarıszı güncelleme ", error) 
   }
   
 };
