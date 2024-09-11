@@ -15,10 +15,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   const login = async (token: string , refresh:string) => {
-    console.log("tyoken",token)
-
-    console.log("Login accessToken:", token);
-    console.log("Login refreshToken:", refresh);
+    
 
     try {
       await AsyncStorage.setItem('userToken', token);

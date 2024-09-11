@@ -47,7 +47,6 @@ const AppliedJobsScreen = () => {
     );
   } 
 
-  console.log("hüso",appliedJobs)
   return (
     <ScrollView style={{ backgroundColor: 'white', flex: 1 }}>
       <View style={{ backgroundColor: 'white', flex: 1 }}>

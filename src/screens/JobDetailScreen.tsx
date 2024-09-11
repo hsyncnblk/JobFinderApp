@@ -11,8 +11,6 @@ const JobDetailScreen = ({ route }) => {
   const [applied, setApplied] = useState(isApplied);
   const { t } = useTranslation();  
 
-  console.log("Detay job", job.id);
-
   const handleApply = async (id) => {
     try {
       const response = await applyJob(id); 

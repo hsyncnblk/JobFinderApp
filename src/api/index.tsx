@@ -25,9 +25,7 @@ export const refreshToken = async () => {
     
     return newAccessToken;  
   } catch (error) {
-   // console.error('Error refreshing token:', error);
-   // Alert.alert('Oturum Yenileme Hatası', 'Token yenileme sırasında bir hata oluştu. Lütfen tekrar giriş yapın.');
-
+   
     throw error;
   }
 };
@@ -46,7 +44,6 @@ api.interceptors.response.use(
         originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`; 
         return api(originalRequest); 
       } catch (refreshError) {
-        //Alert.alert('Giriş Hatası', 'Giriş yapmanız gerekiyor. Lütfen tekrar giriş yapın.');
         return Promise.reject(refreshError);  
       }
     }
@@ -116,7 +113,7 @@ export const jobs = async () => {
   return response.data;
 };
 
-// User bilgilerini al
+// User
 export const user = async () => {
   try {
     const token = await AsyncStorage.getItem('userToken');
@@ -133,7 +130,7 @@ export const user = async () => {
  
 };
 
-// Kullanıcı bilgilerini güncelle
+// Kullanıcı güncelle
 export const updateUser = async (userData) => {
   try {
     const token = await AsyncStorage.getItem('userToken');
