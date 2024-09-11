@@ -23,7 +23,6 @@ export const ProfileProvider = ({ children }: { children: React.ReactNode }) => 
   const { data, isLoading, error , refetch } = useQuery('profile', fetchProfile, {
     onSuccess: (data) => {
       setProfileData(data);
-      console.log("sad",data)
     },
   });
 
