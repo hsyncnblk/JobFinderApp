@@ -16,32 +16,12 @@ const JobListingsScreen = () => {
   const { data: jobData, isLoading, error } = useQuery('jobs', fetchJobs);
   const [filteredJobs, setFilteredJobs] = useState([]);  
 
-
-  // if (isLoading) {
-  //   return (
-  //     <View style={styles.container}>
-  //       <Text>Loading...</Text>
-  //     </View>
-  //   );
-  // }
-
-  
-  // if (error) {
-  //   return (
-  //     <View style={styles.container}>
-  //       <Text>Error fetching jobs</Text>
-  //     </View>
-  //   );
-  // }
-
-  
   const jobsList = Array.isArray(jobData) ? jobData : [];
 
-  
   useEffect(() => {
     if (jobsList.length > 0) {  
       if (searchQuery === '') {
-        setFilteredJobs(jobsList);
+        setFilteredJobs(jobsList); 
       } else {
         const filtered = jobsList.filter((job) =>
           job.companyName.toLowerCase().includes(searchQuery.toLowerCase()) 
@@ -55,7 +35,7 @@ const JobListingsScreen = () => {
     return (
       <View style={styles.container}>
         <SearchBar/>
-        <Text>try again</Text>
+        <Text>No jobs found. Try again!</Text>
       </View>
     );
   }
@@ -65,7 +45,7 @@ const JobListingsScreen = () => {
       <SearchBar /> 
       <ScrollView>
         {filteredJobs.map((job) => (
-          <JobCard job={job} />
+          <JobCard key={job.id} job={job} />
         ))}
       </ScrollView>
     </View>

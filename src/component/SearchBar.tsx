@@ -1,10 +1,33 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, View, TextInput } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { SearchContext } from '../context/SearchContext'; 
+import { searchJobs } from '../api';
 
 const SearchBar = () => {
-  const { searchQuery, setSearchQuery } = useContext(SearchContext);  
+  const { setSearchQuery } = useContext(SearchContext); 
+  const [searchText, setSearchText] = useState(''); 
+
+  const fetchSearch = async (query: string) => {
+    try {
+      const response = await searchJobs(query);  
+      return response;  
+    } catch (error) {
+      console.error('Error fetching jobs:', error);  
+    }
+  };
+
+ 
+  useEffect(() => {
+    if (searchText.length > 0) { 
+      setSearchQuery(searchText); 
+      const fetchData = async () => {
+        const result = await fetchSearch(searchText); 
+        //console.log("Arama Sonucu:", result);  
+      };
+      fetchData(); 
+    }
+  }, [searchText, setSearchQuery]);  
 
   return (
     <View style={{ backgroundColor: '#F2F2F2' }}>
@@ -19,8 +42,8 @@ const SearchBar = () => {
           style={styles.input}
           placeholder="Search (companyName)"
           placeholderTextColor="black"
-          value={searchQuery}  
-          onChangeText={(text) => setSearchQuery(text)}  
+          value={searchText}  
+          onChangeText={(text) => setSearchText(text)} 
         />
       </View>
     </View>
