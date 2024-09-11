@@ -3,6 +3,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useNavigation } from '@react-navigation/native';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import { useTranslation } from 'react-i18next';
 import { AuthContext } from '../context/AuthContext';
 import JobList from '../screens/JobListingsScreen';
@@ -35,9 +38,9 @@ const JobListStackNavigator = () => {
            headerTitleAlign: 'center',
           headerTitle: t('job_listings'),
           headerLeft: () => (
-            <SimpleLineIcons
-              name="logout"
-              size={25}
+            <MaterialCommunityIcons
+              name="arrow-top-left-thin-circle-outline"
+              size={28}
               color="black"
               style={{ marginLeft: 10 }}
               onPress={() => handleLogout(navigation)}
@@ -179,13 +182,13 @@ const BottomTabNavigator = () => {
             />
           ),
           headerRight: () => (
-            <SimpleLineIcons
-              name="logout"
-              size={25}
-              color="black"
-              style={{ marginRight: 10 }}
-              onPress={() => handleLogout(navigation)}
-            />
+            <MaterialCommunityIcons
+            name="arrow-top-left-thin-circle-outline"
+            size={28}
+            color="black"
+            style={{ marginRight: 10 }}
+            onPress={() => handleLogout(navigation)}
+          />
           ),
         }}
       />

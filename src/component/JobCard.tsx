@@ -9,7 +9,7 @@ const JobCard = ({ job }) => {
   const [isApplied, setIsApplied] = useState(false);
   const { t } = useTranslation();  
 
-  const { profileData, isLoading, error } = useProfile();
+  const { profileData, isLoading, error , refetch } = useProfile();
   const appliedJobIds = profileData?.appliedJobs || [];
 
   useEffect(() => {

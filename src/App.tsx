@@ -5,7 +5,7 @@ import { AuthProvider } from './context/AuthContext';
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { I18nextProvider } from 'react-i18next';
 import i18n from './translation/index';
-import { SearchContext, SearchProvider } from './context/SearchContext';
+import {  SearchProvider } from './context/SearchContext';
 import { ProfileProvider } from './context/ProfileDataContext';
 
 const queryClient = new QueryClient();

@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query'; 
 import { loginUser } from '../api/index'; 
 import { AuthContext } from '../context/AuthContext';
+import { useProfile } from '../context/ProfileDataContext';  
 
 
 const LoginScreen = () => {
@@ -13,6 +14,7 @@ const LoginScreen = () => {
   const navigation = useNavigation();
   const { t } = useTranslation();
 
+  const {  refetch } = useProfile();
 
   const { login } = useContext(AuthContext); 
 
@@ -25,7 +27,7 @@ const LoginScreen = () => {
       onSuccess: (response) => {
         console.log('Login başarılı:', response);
         login(response.accessToken , response.refreshToken);
-        
+        refetch()
         navigation.navigate('JobListings'); 
       },
       onError: (error) => {

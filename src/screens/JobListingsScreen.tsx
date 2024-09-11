@@ -35,7 +35,7 @@ const JobListingsScreen = () => {
     return (
       <View style={styles.container}>
         <SearchBar/>
-        <Text>No jobs found. Try again!</Text>
+        <Text>No jobs found. Try again !</Text>
       </View>
     );
   }
