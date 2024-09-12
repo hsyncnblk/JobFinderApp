@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 
 const JobDetailScreen = ({ route }) => {
   const { job, isApplied, setIsApplied } = route.params;
-  const { profileData, setProfileData } = useProfile(); 
+  const { profileData, refetch } = useProfile(); 
   const [applied, setApplied] = useState(isApplied);
   const { t } = useTranslation();  
 
@@ -18,10 +18,8 @@ const JobDetailScreen = ({ route }) => {
       setIsApplied(true);
       setApplied(true);
 
-      setProfileData((prevProfileData) => ({
-        ...prevProfileData,
-        appliedJobs: [...(prevProfileData?.appliedJobs || []), id], 
-      }));
+      
+      await refetch();
     } catch (error) {
       console.error('Başvuru sırasında hata:', error);
     }
@@ -34,10 +32,8 @@ const JobDetailScreen = ({ route }) => {
       setIsApplied(false);
       setApplied(false);
 
-      setProfileData((prevProfileData) => ({
-        ...prevProfileData,
-        appliedJobs: prevProfileData?.appliedJobs?.filter((jobId) => jobId !== id),  
-      }));
+      
+      await refetch();
     } catch (error) {
       console.error('Başvuru iptali sırasında hata:', error);
     }
@@ -61,8 +57,8 @@ const JobDetailScreen = ({ route }) => {
 
         <Text style={styles.title}>{t('Keywords')}</Text>
         <View style={{ paddingHorizontal: 10, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around' }}>
-        {job.keywords.map((keyword, index) => (
-             <Text key={`${keyword}-${index}`} style={styles.keywords}>
+          {job.keywords.map((keyword, index) => (
+            <Text key={`${keyword}-${index}`} style={styles.keywords}>
               {keyword}
             </Text>
           ))}

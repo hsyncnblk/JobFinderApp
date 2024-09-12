@@ -8,8 +8,9 @@ import { useTranslation } from 'react-i18next';
 const JobCard = ({ job }) => {
   const [isApplied, setIsApplied] = useState(false);
   const { t } = useTranslation();  
-
-  const { profileData, isLoading, error , refetch } = useProfile();
+  const { profileData, isLoading, error, refetch } = useProfile();  
+  
+  
   const appliedJobIds = profileData?.appliedJobs || [];
 
   useEffect(() => {
