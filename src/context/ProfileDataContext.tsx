@@ -1,10 +1,9 @@
-import React, { createContext, useContext, useState } from 'react';
-import { profile } from '../api';
-import { useQuery } from 'react-query';
-
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import { AuthContext } from './AuthContext';
 interface ProfileContextType {
   profileData: any;
-  setProfileData: React.Dispatch<React.SetStateAction<any>>;
   isLoading: boolean;
   error: any;
   refetch: () => void;
@@ -12,30 +11,46 @@ interface ProfileContextType {
 
 const ProfileContext = createContext<ProfileContextType | undefined>(undefined);
 
-export const ProfileProvider = ({ children }: { children: React.ReactNode }) => {
-  const [profileData, setProfileData] = useState<any>(null);
+export const ProfileProvider = ({ children }) => {
+  const [profileData, setProfileData] = useState(null);
+  const { token } = useContext(AuthContext);
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const fetchProfile = async () => {
-    const response = await profile();
-    return response.data;
+    try {
+      setIsLoading(true);
+      const token = await AsyncStorage.getItem('userToken');
+      const response = await axios.get('https://novel-project-ntj8t.ampt.app/api/profile', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setProfileData(response.data);
+      setError(null);
+    } catch (err) {
+      setError(err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const { data, isLoading, error , refetch } = useQuery('profile', fetchProfile, {
-    onSuccess: (data) => {
-      setProfileData(data);
-    },
-  });
+  useEffect(() => {
+    fetchProfile();
+  }, [token]);
 
   return (
-    <ProfileContext.Provider value={{ profileData, setProfileData, isLoading, error , refetch }}>
+    <ProfileContext.Provider value={{ profileData, isLoading, error, refetch: fetchProfile }}>
       {children}
     </ProfileContext.Provider>
   );
 };
 
+
 export const useProfile = () => {
   const context = useContext(ProfileContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error('useProfile must be used within a ProfileProvider');
   }
   return context;
