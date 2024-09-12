@@ -30,3 +30,18 @@ cd android
 ```bash
 ./gradlew build
 ```
+
+
+## Technologies Used
+
+- **React Native**
+- **TypeScript** 
+- **Context API**
+- **@react-navigation**
+- **React Query**
+- **React Hook Form** 
+- **Axios**
+- **i18next**
+- **React Native Gesture Handler**
+- **React Native Safe Area Context** 
+- **@react-native-async-storage/async-storage**
